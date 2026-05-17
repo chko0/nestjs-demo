@@ -65,3 +65,22 @@ Hint: you'll need to make use of the `@Query` decorator, I've already injected t
 
 **Extra Bonus Points:** use [pipes](https://docs.nestjs.com/pipes) to validate id params as integers
 **More Extra Bonus Points:** add swagger to your endpoints - see [here](https://docs.nestjs.com/openapi/introduction) for more info
+
+### A note on using AI agents
+
+This exercise is meant to deepen your understanding of NestJS, modules, dependency injection, and building REST APIs. If you plan to use an AI agent, don't ask it to generate the full solution. Instead, guide it with something like:
+
+```
+Act as a mentor. Do not give me the full solution.
+Help me step by step with hints, explanations, and guiding questions so I can implement:
+- The books module with full CRUD operations
+- The publishers module and its one-to-many relationship to books
+- The genres module and its many-to-many relationship to books
+- (Bonus) The `includeAuthor` query param on the books GET endpoint
+- (Bonus) Pipes to validate id params as integers
+- (Bonus) Swagger documentation on the endpoints
+
+Focus on helping me understand, not completing the task for me.
+```
+
+The goal is to understand what you're doing, not just finish the assignment.
