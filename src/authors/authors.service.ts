@@ -18,6 +18,11 @@ export class AuthorsService {
       name: 'Mark Twain',
       email: 'mark.twain@example.com',
     },
+    {
+      id: 4,
+      name: 'F. Scott Fitzgerald',
+      email: 'scott@example.com',
+    },
   ];
 
   findAll() {
