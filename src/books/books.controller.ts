@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -20,8 +21,8 @@ export class BooksController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.booksService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.booksService.findOne(id);
   }
 
   @Post()
@@ -39,7 +40,7 @@ export class BooksController {
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body()
     bookUpdate: {
       name?: string;
@@ -48,11 +49,11 @@ export class BooksController {
       genresId?: number[];
     },
   ) {
-    return this.booksService.update(+id, bookUpdate);
+    return this.booksService.update(id, bookUpdate);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string) {
-    return this.booksService.delete(+id);
+  delete(@Param('id', ParseIntPipe) id: number) {
+    return this.booksService.delete(id);
   }
 }

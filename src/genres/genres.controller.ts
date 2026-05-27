@@ -6,6 +6,7 @@ import {
   Delete,
   Param,
   Body,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { GenresService } from './genres.service';
 
@@ -19,8 +20,8 @@ export class GenresController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.genresService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.genresService.findOne(id);
   }
 
   @Post()
@@ -29,12 +30,15 @@ export class GenresController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() genre: { name?: string }) {
-    return this.genresService.update(+id, genre);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() genre: { name?: string },
+  ) {
+    return this.genresService.update(id, genre);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string) {
-    return this.genresService.delete(+id);
+  delete(@Param('id', ParseIntPipe) id: number) {
+    return this.genresService.delete(id);
   }
 }
