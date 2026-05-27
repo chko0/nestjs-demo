@@ -36,8 +36,18 @@ export class BooksService {
 
   constructor(private readonly authorsService: AuthorsService) {}
 
-  findAll() {
-    return this.books;
+  findAll(includeAuthor: boolean = false) {
+    if (!includeAuthor) {
+      return this.books;
+    }
+
+    return this.books.map((book) => {
+      const { authorId, ...bookWithoutAuthor } = book;
+      return {
+        ...bookWithoutAuthor,
+        author: this.authorsService.findOne(authorId),
+      };
+    });
   }
 
   findOne(id: number) {

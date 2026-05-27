@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { BooksService } from './books.service';
 
@@ -14,8 +15,8 @@ export class BooksController {
   constructor(private readonly booksService: BooksService) {}
 
   @Get()
-  findAll() {
-    return { books: this.booksService.findAll() };
+  findAll(@Query('includeAuthor') includeAuthor: string) {
+    return { books: this.booksService.findAll(includeAuthor === 'true') };
   }
 
   @Get(':id')
