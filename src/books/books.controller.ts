@@ -19,19 +19,22 @@ export class BooksController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: String) {
+  findOne(@Param('id') id: string) {
     return this.booksService.findOne(+id);
   }
 
   @Post()
-  create(@Body() book: { title: string; authorId: number }) {
+  create(
+    @Body() book: { title: string; authorId: number; publisherId: number },
+  ) {
     return this.booksService.create(book);
   }
 
   @Patch(':id')
   update(
     @Param('id') id: string,
-    @Body() bookUpdate: { name?: string; authorId?: number },
+    @Body()
+    bookUpdate: { name?: string; authorId?: number; publisherId?: number },
   ) {
     return this.booksService.update(+id, bookUpdate);
   }
