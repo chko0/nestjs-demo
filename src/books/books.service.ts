@@ -9,24 +9,28 @@ export class BooksService {
       title: 'The Great Gatsby',
       authorId: 4,
       publisherId: 1,
+      genresId: [1, 4],
     },
     {
       id: 2,
       title: 'A Tale of Two Cities',
       authorId: 2,
       publisherId: 2,
+      genresId: [1, 2],
     },
     {
       id: 3,
       title: 'Adventures of Huckleberry Finn',
       authorId: 3,
       publisherId: 3,
+      genresId: [1, 3],
     },
     {
       id: 4,
       title: 'Pride and Prejudice',
       authorId: 1,
       publisherId: 4,
+      genresId: [3, 2, 1],
     },
   ];
 
@@ -44,7 +48,12 @@ export class BooksService {
     return book;
   }
 
-  create(book: { title: string; authorId: number; publisherId: number }) {
+  create(book: {
+    title: string;
+    authorId: number;
+    publisherId: number;
+    genresId: number[];
+  }) {
     const newBook = {
       id: this.books[this.books.length - 1].id + 1,
       ...book,
@@ -55,7 +64,12 @@ export class BooksService {
 
   update(
     id: number,
-    book: { title?: string; authorId?: number; publisherId?: number },
+    book: {
+      title?: string;
+      authorId?: number;
+      publisherId?: number;
+      genresId?: number[];
+    },
   ) {
     const bookIndex = this.books.findIndex((book) => book.id === id);
 
