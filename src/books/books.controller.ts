@@ -10,7 +10,15 @@ import {
   Query,
 } from '@nestjs/common';
 import { BooksService } from './books.service';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiOperation,
+  ApiQuery,
+  ApiOkResponse,
+  ApiNotFoundResponse,
+  ApiBadRequestResponse,
+  ApiTags,
+  ApiCreatedResponse,
+} from '@nestjs/swagger';
 
 @ApiTags('books')
 @Controller('books')
@@ -19,21 +27,29 @@ export class BooksController {
 
   @Get()
   @ApiOperation({ summary: 'Get all books' })
-  @ApiResponse({ status: 200, description: 'Success' })
+  @ApiOkResponse({ description: 'Success' })
+  @ApiQuery({
+    name: 'includeAuthor',
+    required: false,
+    description: 'Include author details in the response',
+    type: Boolean,
+  })
   findAll(@Query('includeAuthor') includeAuthor: string) {
     return { books: this.booksService.findAll(includeAuthor === 'true') };
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get book by id' })
-  @ApiResponse({ status: 200, description: 'Success' })
+  @ApiOkResponse({ description: 'Success' })
+  @ApiNotFoundResponse({ description: 'Book not found' })
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.booksService.findOne(id);
   }
 
   @Post()
   @ApiOperation({ summary: 'Create book' })
-  @ApiResponse({ status: 201, description: 'Book created' })
+  @ApiCreatedResponse({ description: 'Book created successfully' })
+  @ApiBadRequestResponse({ description: 'Bad request' })
   create(
     @Body()
     book: {
@@ -48,7 +64,8 @@ export class BooksController {
 
   @Patch(':id')
   @ApiOperation({ summary: 'Update book' })
-  @ApiResponse({ status: 200, description: 'Book updated' })
+  @ApiOkResponse({ description: 'Book updated' })
+  @ApiNotFoundResponse({ description: 'Book not found' })
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body()
@@ -64,7 +81,8 @@ export class BooksController {
 
   @Delete(':id')
   @ApiOperation({ summary: 'Delete book' })
-  @ApiResponse({ status: 200, description: 'Book deleted' })
+  @ApiOkResponse({ description: 'Book deleted' })
+  @ApiNotFoundResponse({ description: 'Book not found' })
   delete(@Param('id', ParseIntPipe) id: number) {
     return this.booksService.delete(id);
   }

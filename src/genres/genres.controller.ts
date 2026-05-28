@@ -9,7 +9,14 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { GenresService } from './genres.service';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @ApiTags('genres')
 @Controller('genres')
@@ -18,28 +25,31 @@ export class GenresController {
 
   @Get()
   @ApiOperation({ summary: 'Get all genres' })
-  @ApiResponse({ status: 200, description: 'Success' })
+  @ApiOkResponse({ description: 'Success' })
   findAll() {
     return { genres: this.genresService.findAll() };
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get genre by id' })
-  @ApiResponse({ status: 200, description: 'Success' })
+  @ApiOkResponse({ description: 'Success' })
+  @ApiNotFoundResponse({ description: 'Genre not found' })
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.genresService.findOne(id);
   }
 
   @Post()
   @ApiOperation({ summary: 'Create genre' })
-  @ApiResponse({ status: 201, description: 'Genre created' })
+  @ApiCreatedResponse({ description: 'Genre created successfully' })
+  @ApiBadRequestResponse({ description: 'Bad request' })
   create(@Body() genre: { name: string }) {
     return this.genresService.create(genre);
   }
 
   @Patch(':id')
   @ApiOperation({ summary: 'Update genre' })
-  @ApiResponse({ status: 200, description: 'Genre updated' })
+  @ApiOkResponse({ description: 'Genre updated' })
+  @ApiNotFoundResponse({ description: 'Genre not found' })
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() genre: { name?: string },
@@ -49,7 +59,8 @@ export class GenresController {
 
   @Delete(':id')
   @ApiOperation({ summary: 'Delete genre' })
-  @ApiResponse({ status: 200, description: 'Genre deleted' })
+  @ApiOkResponse({ description: 'Genre deleted' })
+  @ApiNotFoundResponse({ description: 'Genre not found' })
   delete(@Param('id', ParseIntPipe) id: number) {
     return this.genresService.delete(id);
   }

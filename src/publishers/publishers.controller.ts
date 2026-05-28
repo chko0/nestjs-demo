@@ -9,7 +9,14 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { PublishersService } from './publishers.service';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiOkResponse,
+  ApiNotFoundResponse,
+  ApiCreatedResponse,
+  ApiBadRequestResponse,
+} from '@nestjs/swagger';
 
 @ApiTags('publishers')
 @Controller('publishers')
@@ -18,28 +25,31 @@ export class PublishersController {
 
   @Get()
   @ApiOperation({ summary: 'Get all publishers' })
-  @ApiResponse({ status: 200, description: 'Success' })
+  @ApiOkResponse({ description: 'Success' })
   findAll() {
     return { publishers: this.publishersService.findAll() };
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get publisher by id' })
-  @ApiResponse({ status: 200, description: 'Success' })
+  @ApiOkResponse({ description: 'Success' })
+  @ApiNotFoundResponse({ description: 'Publisher not found' })
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.publishersService.findOne(id);
   }
 
   @Post()
   @ApiOperation({ summary: 'Create publisher' })
-  @ApiResponse({ status: 201, description: 'Publisher created' })
+  @ApiCreatedResponse({ description: 'Publisher created successfully' })
+  @ApiBadRequestResponse({ description: 'Bad request' })
   create(@Body() publisher: { name: string }) {
     return this.publishersService.create(publisher);
   }
 
   @Patch(':id')
   @ApiOperation({ summary: 'Update publisher' })
-  @ApiResponse({ status: 200, description: 'Publisher updated' })
+  @ApiOkResponse({ description: 'Publisher updated' })
+  @ApiNotFoundResponse({ description: 'Publisher not found' })
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() publisher: { name?: string },
@@ -49,7 +59,8 @@ export class PublishersController {
 
   @Delete(':id')
   @ApiOperation({ summary: 'Delete publisher' })
-  @ApiResponse({ status: 200, description: 'Publisher deleted' })
+  @ApiOkResponse({ description: 'Publisher deleted' })
+  @ApiNotFoundResponse({ description: 'Publisher not found' })
   delete(@Param('id', ParseIntPipe) id: number) {
     return this.publishersService.delete(id);
   }
